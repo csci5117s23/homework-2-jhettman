@@ -1,13 +1,18 @@
 import Head from 'next/head'
-
+import { SignInButton, SignUpButton, re, SignedIn, SignedOut } from "@clerk/nextjs";
+import { useRouter } from "next/router";
 import Link from 'next/link'
 import 'bulma/css/bulma.min.css'
-
-
+import todoComp from '@/components/TodoComp';
+import { useAuth } from "@clerk/nextjs";
 export default function Home() {
-  function handlePress(){
-
+  const { isLoaded, userId, sessionId, getToken } = useAuth();
+  
+  const router = useRouter()
+  if(userId){
+    router.push('/todos')
   }
+  else{
   return (
     <>
       <Head>
@@ -18,8 +23,9 @@ export default function Home() {
           <div class='column is-half'>hey, welcome to Jhett's to-do list app.<br></br> 
             It's likely worse than any other planning app.<br></br>  
             Try it out. <br></br>
-          <Link href='/todos' ><button class="button is-primary" >Sure... I guess.</button> </Link>
+            <SignInButton redirectUrl='/todos'>Sign in!</SignInButton><br></br>
           </div>
     </>
   )
+  }
 }
